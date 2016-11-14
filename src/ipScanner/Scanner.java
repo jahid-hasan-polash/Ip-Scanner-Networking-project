@@ -10,8 +10,9 @@ import java.util.Enumeration;
 
 public class Scanner {
 	
+    public static int flag=0;
 	//starts threads
-	private static void startThread(){
+	public static void startThread(){
 	    new PingThread().start();
 	    new PingThread().start();
 	    new PingThread().start();
@@ -80,11 +81,11 @@ public class Scanner {
 	    //create network and broadcast address
 	    long networkAddressInteger = netAddressInteger & subnetMaskNumber;
 	    long broadcastAddressInteger = networkAddressInteger + (int)Math.pow(2, hostBit) - 1;
-	   
-	    //Generate the IP list
-	    IpContainers.callArraylistMaker(networkAddressInteger, broadcastAddressInteger);
-	    //launch threads
-	    startThread();
+            Table table = new Table(networkAddressInteger, broadcastAddressInteger);
+            IpContainers.table = table;
+            //table.callTable();
+           table.setVisible(true);
+            
 	    
 	}
 	

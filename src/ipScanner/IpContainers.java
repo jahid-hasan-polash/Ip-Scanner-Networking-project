@@ -14,6 +14,7 @@ public class IpContainers {
 	public static Queue<String> ipAddresses = new LinkedList<String>();
 	public static ArrayList<String> availableIpAddresses = new ArrayList<String>();
 	public static String startIp = "";
+        public static Table table;
 	
 	//convert integerAddresses to String IP address to form an arraylist
 	//return string
@@ -48,7 +49,9 @@ public class IpContainers {
 
 		private static Queue<String> makeArrayList(long networkAddressInteger, long broadcastAddressInteger){
 			Queue<String> al=new LinkedList<String>();
-			startIp = convertAddressInteger(networkAddressInteger+2);
+                        if(startIp.equals("")){
+                            startIp = convertAddressInteger(networkAddressInteger+2);
+                        }
 			int a = 0;
 			for(networkAddressInteger= networkAddressInteger+2;
 					networkAddressInteger<broadcastAddressInteger;networkAddressInteger++){
@@ -58,7 +61,7 @@ public class IpContainers {
 				 * generates IP list from a start point
 				 * there should be some input process to get the startIp address 
 				 */
-				startIp = "192.168.0.100";
+				//startIp = "192.168.0.100";
 				if(!obj.equals(startIp) && a==0){
 					continue;
 				}else{

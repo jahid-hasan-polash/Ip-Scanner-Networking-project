@@ -16,19 +16,21 @@ public class PingThread extends Thread {
 				String ipInstance = IpContainers.ipAddresses.element(); //Fetch a queue element
 				String command = "ping -c 3 "+ipInstance; //Create command
 				String output = executeCommand(command); //Call execute method ( decleared below in this class)
-				
-				//Checks if the ping response is a success
-				if(output.contains("Request timeout for icmp_seq 0")){
-					System.out.println(ipInstance+" : Is not reachable :("); //Its not needed actually
-				}//If the IP is not already in the list
-				else if(!IpContainers.availableIpAddresses.contains(ipInstance)){ 
-					IpContainers.availableIpAddresses.add(ipInstance); //add Ip in the list
-					System.out.println(ipInstance+" : Is found yeee..");
-				}else{
-					//Do nothing
-				}
-				//remove the element from the queue to travarse the next element
-				IpContainers.ipAddresses.remove();
+				synchronized(IpContainers.availableIpAddresses)
+                                {//Checks if the ping response is a success
+                                    if(!output.contains("64 bytes from ")){
+                                            System.out.println(ipInstance+" : Is not reachable :("); //Its not needed actually
+                                    }//If the IP is not already in the list
+                                    else if(!IpContainers.availableIpAddresses.contains(ipInstance)){ 
+                                            IpContainers.availableIpAddresses.add(ipInstance); //add Ip in the list
+                                            System.out.println(ipInstance+" : Is found yeee..");
+                                            IpContainers.table.populateTable(ipInstance);
+                                    }else{
+                                            //Do nothing
+                                    }
+                                    //remove the element from the queue to travarse the next element
+                                    IpContainers.ipAddresses.remove();
+                                }
 			}
 		}catch(Exception e){
 			System.out.println(e);
